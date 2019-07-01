@@ -69,20 +69,20 @@ end
 ## Methods
 
 ```ruby
-User.first.archive          #=> archives User record and dependents
-User.first.unarchive        #=> unarchives User record and dependents
+user = User.first
+user.archive        #=> Archives the User record and its dependents
+user.unarchive      #=> Unarchives the User record and its dependents
+user.to_archival    #=> Returns the User archival state locale string (ex: Archived)
 
-User.first.to_archival      #=> returns archival state string
-
-User.archive_all            #=> archives all User records and dependents
-User.unarchive_all          #=> unarchives all User record and dependents
+User.archive_all    #=> Archives all User records and their dependents
+User.unarchive_all  #=> Unarchives all User record and their dependents
 ```
 
 ## Scopes
 
 ```ruby
-User.archived.all           #=> returns only archived record
-User.unarchived.all         #=> returns only unarchived record
+User.archived.all   #=> Returns only archived records
+User.unarchived.all #=> Returns only unarchived records
 ```
 
 ## Callbacks
