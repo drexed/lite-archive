@@ -2,6 +2,7 @@
 
 module Lite
   module Archive
+
     class Configuration
 
       attr_accessor :all_records_archivable
