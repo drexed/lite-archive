@@ -18,6 +18,8 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/**/*'
     - '*.gemspec'
+Metrics/ModuleLength:
+  Enabled: false
 Naming/FileName:
   Exclude:
     - 'spec/support/config/lite-archive.rb'

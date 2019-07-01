@@ -13,33 +13,9 @@ ActiveRecord::Base.establish_connection(
 ActiveRecord::Migration.verbose = false
 
 ActiveRecord::Schema.define(version: 1) do
-  create_table :users, force: true do |t|
-    t.string :name
-    t.integer :cars_count, default: 0
-    t.integer :comments_count, default: 0
-    t.timestamps null: false
-  end
-
-  create_table :licenses, force: true do |t|
-    t.references :user
-    t.string :number
-    t.timestamps archive: false
-  end
-
   create_table :bios, force: true do |t|
     t.references :user
     t.string :hobbies
-    t.timestamps null: false
-  end
-
-  create_table :riders, force: true do |t|
-    t.references :requester, polymorphic: true
-    t.timestamps null: false
-  end
-
-  create_table :comments, force: true do |t|
-    t.references :user
-    t.text :body
     t.timestamps null: false
   end
 
@@ -53,14 +29,38 @@ ActiveRecord::Schema.define(version: 1) do
     t.datetime :archived_at
   end
 
-  create_table :insurances, force: true do |t|
-    t.references :car
-    t.string :provider
+  create_table :comments, force: true do |t|
+    t.references :user
+    t.text :body
+    t.timestamps null: false
   end
 
   create_table :drivers, force: true do |t|
     t.references :car
     t.string :name
+    t.timestamps null: false
+  end
+
+  create_table :insurances, force: true do |t|
+    t.references :car
+    t.string :provider
+  end
+
+  create_table :licenses, force: true do |t|
+    t.references :user
+    t.string :number
+    t.timestamps archive: false
+  end
+
+  create_table :riders, force: true do |t|
+    t.references :requester, polymorphic: true
+    t.timestamps null: false
+  end
+
+  create_table :users, force: true do |t|
+    t.string :name
+    t.integer :cars_count, default: 0
+    t.integer :comments_count, default: 0
     t.timestamps null: false
   end
 end

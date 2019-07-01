@@ -19,7 +19,7 @@ RSpec.describe Lite::Archive::Methods do
   end
 
   describe '.archive_all' do
-    it 'to be 0 when table is unarchivable and everything is perma-deleted' do
+    it 'to be 0 when table is unarchivable and everything is hard-deleted' do
       3.times { License.create! }
       License.archive_all
 
@@ -44,7 +44,7 @@ RSpec.describe Lite::Archive::Methods do
   end
 
   describe '.unarchive_all' do
-    it 'to be 0 when table is unarchivable and everything is perma-deleted and revived' do
+    it 'to be 0 when table is unarchivable and everything is hard-deleted and revived' do
       3.times { License.create! }
       License.archive_all
       License.unarchive_all
@@ -64,8 +64,7 @@ RSpec.describe Lite::Archive::Methods do
       user = User.create!
       car = user.cars.create!
       2.times { car.drivers.create! }
-      User.archive_all
-      User.unarchive_all
+      %i[archive_all unarchive_all].each { |method| User.send(method) }
 
       expect(Driver.unarchived.count).to eq(2)
     end

@@ -90,7 +90,7 @@ module Lite
         save(validate: false)
       end
 
-      # rubocop:disable Metrics/CyclomaticComplexity
+      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/MethodLength
       def mark_relections_as_archived
         self.class.reflections.each do |table_name, reflection|
           next unless dependent_destroy?(reflection)
@@ -128,6 +128,7 @@ module Lite
           dependents.send(action)
         end
       end
+      # rubocop:enable Metrics/MethodLength
 
       def dependent_destroy?(reflection)
         reflection.options[:dependent] == :destroy

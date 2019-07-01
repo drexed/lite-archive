@@ -5,7 +5,7 @@ require 'spec_helper'
 RSpec.describe Lite::Archive::Base do
 
   describe '.archive' do
-    context 'all records on table with archived_at' do
+    context 'when all records on table with archived_at' do
       it 'to be Time object when soft-deleted' do
         user = User.create!
         user.archive
@@ -28,7 +28,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on table without archived_at' do
+    context 'when all records on table without archived_at' do
       it 'to be 0 when soft-deleted' do
         license = License.create!
         license.archive
@@ -37,7 +37,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on dependent table with archived_at' do
+    context 'when all records on dependent table with archived_at' do
       it 'to be true when soft-deleted' do
         user = User.create!
         Bio.create!(user_id: user.id)
@@ -55,7 +55,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on dependent table without archived_at' do
+    context 'when all records on dependent table without archived_at' do
       it 'to be 0 when soft-deleted' do
         user = User.create!
         License.create!(user_id: user.id)
@@ -65,7 +65,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'last record on dependent table with archived_at' do
+    context 'when last record on dependent table with archived_at' do
       it 'to be 2 when soft-deleted' do
         user = User.create!
         2.times { Comment.create!(user_id: user.id) }
@@ -84,7 +84,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'first record on dependent table with archived_at' do
+    context 'when first record on dependent table with archived_at' do
       it 'to be 2 when soft-deleted' do
         user = User.create!
         2.times { Car.create!(user_id: user.id) }
@@ -94,7 +94,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on parent table with and dependent table without archived_at' do
+    context 'when all records on parent table with and dependent table without archived_at' do
       it 'to be 0 when soft-deleted' do
         user = User.create!
         car = user.cars.create!
@@ -105,7 +105,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on parent table with and dependent table with archived_at' do
+    context 'when all records on parent table with and dependent table with archived_at' do
       it 'to be 2 when soft-deleted' do
         user = User.create!
         car = user.cars.create!
@@ -117,8 +117,9 @@ RSpec.describe Lite::Archive::Base do
     end
   end
 
+  # rubocop:disable RSpec/ExampleLength
   describe '.archive_all' do
-    context 'all records on dependent table with archived_at' do
+    context 'when all records on dependent table with archived_at' do
       it 'to be all the proper counts when soft-delete' do
         user = User.create!
         car = user.cars.create!
@@ -133,9 +134,10 @@ RSpec.describe Lite::Archive::Base do
       end
     end
   end
+  # rubocop:enable RSpec/ExampleLength
 
   describe '.unarchive' do
-    context 'all records on table with archived_at' do
+    context 'when all records on table with archived_at' do
       it 'to be 1 when soft-deleted' do
         user = User.create!
         user.archive
@@ -153,7 +155,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on table without archived_at' do
+    context 'when all records on table without archived_at' do
       it 'to be 0 when soft-deleted' do
         license = License.create!
         license.archive
@@ -162,7 +164,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on dependent table with archived_at' do
+    context 'when all records on dependent table with archived_at' do
       it 'to be true when soft-deleted' do
         user = User.create!
         Bio.create!(user_id: user.id)
@@ -173,7 +175,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'all records on dependent table with archived_at' do
+    context 'when all records on dependent table with archived_at' do
       it 'to be 2 when soft-deleted' do
         user = User.create!
         2.times { user.cars.create! }
@@ -271,7 +273,7 @@ RSpec.describe Lite::Archive::Base do
   end
 
   describe '.callbacks' do
-    context 'to after_unarchive' do
+    context 'when triggering the after_unarchive callback' do
       it 'to be "after name" for name' do
         user = User.create!
         user.archive
@@ -280,7 +282,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'to before_unarchive' do
+    context 'when triggering the before_unarchive callback' do
       it 'to be "before name" for name' do
         user = User.create!
         user.archive
@@ -292,7 +294,7 @@ RSpec.describe Lite::Archive::Base do
   end
 
   describe '.counter_cache' do
-    context 'increment counters' do
+    context 'when incrementing counters' do
       it 'to be 2 when dependents created' do
         user = User.create!
         2.times { user.cars.create! }
@@ -301,7 +303,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'decrement counters' do
+    context 'when decrementing counters' do
       it 'to be 2 when soft-deleted' do
         user = User.create!
         2.times { user.cars.create! }
@@ -310,7 +312,7 @@ RSpec.describe Lite::Archive::Base do
         expect(user.cars_count).to eq(2)
       end
 
-      it 'to be 1 when perma-deleted' do
+      it 'to be 1 when hard-deleted' do
         user = User.create!
         2.times { user.cars.create! }
         user.cars.last.destroy
@@ -321,7 +323,7 @@ RSpec.describe Lite::Archive::Base do
   end
 
   describe '.dirty_attributes' do
-    context 'add archived_at to mutations' do
+    context 'when adding archived_at to mutations' do
       it 'to be true for saved_change_to_archived_at?' do
         user = User.create!
         user.archive

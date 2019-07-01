@@ -6,6 +6,10 @@ require 'generator_spec'
 
 spec_path = Pathname.new(File.expand_path('../spec', File.dirname(__FILE__)))
 
+Lite::Archive.configure do |config|
+  config.all_records_archivable = true
+end
+
 %w[config models].each do |dir|
   Dir.each_child(spec_path.join("support/#{dir}")) do |f|
     load(spec_path.join("support/#{dir}/#{f}"))
