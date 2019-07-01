@@ -49,16 +49,22 @@ An `archived_at` column must be added to tables where you do not want records de
 If the table does not have this column, records will be destroy instead of archived.
 
 ```ruby
-class AddArchivedAtColumns < ActiveRecord::Migration
+class AddArchivedAtColumn < ActiveRecord::Migration
   def change
     # Adds archived_at automatically (if all_records_archivable is set to true)
     t.timestamp
 
+    # - or -
+
     # Adds archived_at timestamp
     t.timestamp archive: true
 
+    # - or -
+
     # Does NOT add archived_at timestamp
     t.timestamp archive: false
+
+    # - or -
 
     # Manual column (null constraint must be false)
     add_column :your_model, :archived_at, :datetime
