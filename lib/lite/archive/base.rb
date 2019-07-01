@@ -9,8 +9,7 @@ module Lite
         base.extend Scopes
 
         base.instance_eval do
-          define_model_callbacks :archive, only: %i[before after]
-          define_model_callbacks :unarchive, only: %i[before after]
+          %i[archive unarchive].each { |name| define_model_callbacks name, only: %i[before after] }
         end
       end
 
@@ -72,20 +71,20 @@ module Lite
 
       private
 
-      def updatable?
-        respond_to?(:updated_at)
+      def dependent_destroy?(reflection)
+        reflection.options[:dependent] == :destroy
       end
 
       def mark_as_archived
-        timestamp = Time.now
+        ts = timestamp
 
-        self.updated_at = timestamp if updatable?
-        self.archived_at = timestamp
+        self.updated_at = ts if updatable?
+        self.archived_at = ts
         save(validate: false)
       end
 
       def mark_as_unarchived
-        self.updated_at = Time.now if updatable?
+        self.updated_at = timestamp if updatable?
         self.archived_at = nil
         save(validate: false)
       end
@@ -99,10 +98,10 @@ module Lite
           next if dependents.nil?
 
           action = case [reflection_marco(reflection), archivable?]
-                   when [:one, true] then :archive
-                   when [:one, false] then :destroy
-                   when [:many, true] then :archive_all
-                   when [:many, false] then :destroy_all
+                   when ['one', true] then :archive
+                   when ['one', false] then :destroy
+                   when ['many', true] then :archive_all
+                   when ['many', false] then :destroy_all
                    end
 
           dependents.send(action)
@@ -121,18 +120,14 @@ module Lite
           next if dependents.nil?
 
           action = case reflection_marco(reflection)
-                   when :one then :unarchive
-                   when :many then :unarchive_all
+                   when 'one' then :unarchive
+                   when 'many' then :unarchive_all
                    end
 
           dependents.send(action)
         end
       end
       # rubocop:enable Metrics/MethodLength
-
-      def dependent_destroy?(reflection)
-        reflection.options[:dependent] == :destroy
-      end
 
       def reflection_dependents(table_name)
         send(table_name)
@@ -143,7 +138,15 @@ module Lite
       end
 
       def reflection_marco(reflection)
-        reflection.macro.to_s.gsub('has_', '').to_sym
+        reflection.macro.to_s.gsub('has_', '')
+      end
+
+      def timestamp
+        Time.respond_to?(:current) ? Time.current : Time.now
+      end
+
+      def updatable?
+        respond_to?(:updated_at)
       end
 
     end
