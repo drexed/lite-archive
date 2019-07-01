@@ -20,9 +20,6 @@ Metrics/BlockLength:
     - '*.gemspec'
 Metrics/ModuleLength:
   Enabled: false
-Naming/FileName:
-  Exclude:
-    - 'spec/support/config/lite-archive.rb'
 RSpec/MultipleExpectations:
   Enabled: false
 Style/Documentation:

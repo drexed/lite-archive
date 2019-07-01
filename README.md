@@ -1,8 +1,11 @@
 # Lite::Archive
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/lite/archive`. To experiment with that code, run `bin/console` for an interactive prompt.
+[![Gem Version](https://badge.fury.io/rb/lite-archive.svg)](http://badge.fury.io/rb/lite-archive)
+[![Build Status](https://travis-ci.org/drexed/lite-archive.svg?branch=master)](https://travis-ci.org/drexed/lite-archive)
 
-TODO: Delete this and the text above, and describe your gem
+Lite::Archive is a library for archiving (soft-delete) database records.
+
+**NOTE:** If you are coming from `ActiveArchive`, please read the [port](#port) section.
 
 ## Installation
 
@@ -20,9 +23,89 @@ Or install it yourself as:
 
     $ gem install lite-archive
 
+## Table of Contents
+
+* [Configurations](#configurations)
+* [Usage](#usage)
+* [Methods](#methods)
+* [Scopes](#scopes)
+* [Callbacks](#callbacks)
+* [Port](#port)
+
+## Configurations
+
+`rails g lite:archive:install` will generate the following file:
+`../config/initalizers/lite-archive.rb`
+
+```ruby
+Lite::Archive.configure do |config|
+  config.all_records_archivable = false
+end
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+An `archived_at` column must be added to tables where you do not want records destroyed.
+If the table does not have this column, records will be destroy instead of archived.
+
+```ruby
+class AddArchivedAtColumns < ActiveRecord::Migration
+  def change
+    # Adds archived_at automatically (if all_records_archivable is set to true)
+    t.timestamp
+
+    # Adds archived_at timestamp
+    t.timestamp archive: true
+
+    # Does NOT add archived_at timestamp
+    t.timestamp archive: false
+
+    # Manual column (null constraint must be false)
+    add_column :your_model, :archived_at, :datetime
+  end
+end
+```
+
+## Methods
+
+```ruby
+User.first.archive          #=> archives User record and dependents
+User.first.unarchive        #=> unarchives User record and dependents
+
+User.first.to_archival      #=> returns archival state string
+
+User.archive_all            #=> archives all User records and dependents
+User.unarchive_all          #=> unarchives all User record and dependents
+```
+
+## Scopes
+
+```ruby
+User.archived.all           #=> returns only archived record
+User.unarchived.all         #=> returns only unarchived record
+```
+
+## Callbacks
+
+ ```ruby
+ class User < ActiveRecord::Base
+   # ... omitted ...
+
+   before_archive :do_something
+   after_archive :do_something
+
+   before_unarchived :do_something
+   after_unarchive :do_something
+
+   # ... omitted ...
+ end
+```
+
+## Port
+
+`Lite::Archive` is compatible port of [ActiveArchive](https://github.com/drexed/active_archive).
+
+Switching is as easy as renaming `ActiveArchive` to `Lite::Archive`.
 
 ## Development
 
