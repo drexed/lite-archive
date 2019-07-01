@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Juan Gomez']
   spec.email = %w[j.gomez@drexed.com]
 
-  spec.summary = 'Collection of ActiveModel/ActiveRecord archive'
+  spec.summary = 'Archive (soft-delete) ActiveRecord database records'
   spec.homepage = 'http://drexed.github.io/lite-archive'
   spec.license = 'MIT'
 
