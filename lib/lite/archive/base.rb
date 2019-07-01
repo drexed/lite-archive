@@ -71,12 +71,16 @@ module Lite
 
       private
 
+      def archival_timestamp
+        Time.respond_to?(:current) ? Time.current : Time.now
+      end
+
       def dependent_destroy?(reflection)
         reflection.options[:dependent] == :destroy
       end
 
       def mark_as_archived
-        ts = timestamp
+        ts = archival_timestamp
 
         self.updated_at = ts if updatable?
         self.archived_at = ts
@@ -84,7 +88,7 @@ module Lite
       end
 
       def mark_as_unarchived
-        self.updated_at = timestamp if updatable?
+        self.updated_at = archival_timestamp if updatable?
         self.archived_at = nil
         save(validate: false)
       end
@@ -139,10 +143,6 @@ module Lite
 
       def reflection_marco(reflection)
         reflection.macro.to_s.gsub('has_', '')
-      end
-
-      def timestamp
-        Time.respond_to?(:current) ? Time.current : Time.now
       end
 
       def updatable?
