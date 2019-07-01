@@ -10,7 +10,7 @@ module Lite
         column(:created_at, :datetime, options)
         column(:updated_at, :datetime, options)
 
-        return unless Lite::Archive.configuration.all_records_archivable == true
+        return if !Lite::Archive.configuration.all_records_archivable
         return if options[:archive] == false
 
         options[:null] = true
