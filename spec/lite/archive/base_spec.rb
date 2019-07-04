@@ -10,7 +10,7 @@ RSpec.describe Lite::Archive::Base do
         user = User.create!
         user.archive
 
-        expect(user.archived_at.is_a?(Time)).to eq(true)
+        expect(user.archived_at).to be_a(Time)
       end
 
       it 'to be the timestamp for updated_at and archived_at' do
