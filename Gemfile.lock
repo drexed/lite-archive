@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    lite-archive (1.0.1)
+    lite-archive (1.0.2)
       activerecord
       activesupport
 
