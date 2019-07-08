@@ -109,7 +109,7 @@ User.unarchived.all #=> Returns only unarchived records
 
 ## Port
 
-`Lite::Archive` is compatible port of [ActiveArchive](https://github.com/drexed/active_archive).
+`Lite::Archive` is a compatible port of [ActiveArchive](https://github.com/drexed/active_archive).
 
 Switching is as easy as renaming `ActiveArchive` to `Lite::Archive`.
 
