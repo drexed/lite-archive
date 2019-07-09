@@ -10,7 +10,7 @@ RSpec.describe Lite::Archive::Configuration do
   end
 
   describe '.configure' do
-    it 'to be "foo" for all_records_archivable' do
+    it 'to be "foo"' do
       Lite::Archive.configuration.all_records_archivable = 'foo'
 
       expect(Lite::Archive.configuration.all_records_archivable).to eq('foo')
