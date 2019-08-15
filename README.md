@@ -35,7 +35,7 @@ Or install it yourself as:
 ## Configurations
 
 `rails g lite:archive:install` will generate the following file:
-`../config/initalizers/lite-archive.rb`
+`../config/initalizers/lite_archive.rb`
 
 ```ruby
 Lite::Archive.configure do |config|
