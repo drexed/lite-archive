@@ -5,10 +5,11 @@ module Lite
 
     class Configuration
 
-      attr_accessor :all_records_archivable
+      attr_accessor :all_records_archivable, :sync_updated_at
 
       def initialize
         @all_records_archivable = false
+        @sync_updated_at = true
       end
 
     end

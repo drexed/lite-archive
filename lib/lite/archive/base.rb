@@ -146,6 +146,8 @@ module Lite
       end
 
       def updatable?
+        return false unless Lite::Archive.configuration.sync_updated_at == true
+
         respond_to?(:updated_at)
       end
 
