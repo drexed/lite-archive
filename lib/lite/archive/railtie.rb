@@ -6,7 +6,7 @@ module Lite
   module Archive
     class Railtie < ::Rails::Railtie
 
-      initializer 'lite-archive' do |app|
+      initializer 'lite-archive.setup' do |app|
         Lite::Archive::Railtie.instance_eval do
           [app.config.i18n.available_locales].flatten.each do |locale|
             path = File.expand_path("../../../config/locales/#{locale}.yml", __FILE__)
