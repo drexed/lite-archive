@@ -173,9 +173,7 @@ RSpec.describe Lite::Archive::Base do
 
         expect(user.bio.unarchived?).to eq(true)
       end
-    end
 
-    context 'when all records on dependent table with archived_at' do
       it 'to be 2 when soft-deleted' do
         user = User.create!
         2.times { user.cars.create! }
