@@ -7,14 +7,14 @@ module Lite
       def timestamps(*args)
         options = args.extract_options!
 
-        column(:created_at, :datetime, options)
-        column(:updated_at, :datetime, options)
+        column(:created_at, :datetime, **options)
+        column(:updated_at, :datetime, **options)
 
         return unless Lite::Archive.configuration.all_records_archivable == true
         return if options[:archive] == false
 
         options[:null] = true
-        column(:archived_at, :datetime, options)
+        column(:archived_at, :datetime, **options)
       end
 
     end
