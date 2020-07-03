@@ -35,13 +35,3 @@ Style/Documentation:
   Enabled: false
 Style/ExpandPathArguments:
   Enabled: false
-Style/ExponentialNotation:
-  Enabled: true
-Style/HashEachMethods:
-  Enabled: true
-Style/HashTransformKeys:
-  Enabled: true
-Style/HashTransformValues:
-  Enabled: true
-Style/SlicingWithRange:
-  Enabled: false
