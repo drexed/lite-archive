@@ -7,8 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ## [1.0.6] - 2020-07-03
-### Removed
-- Removed Ruby 2.7 deprecation warnings
+### Added
+- Added Ruby 2.7 support
 
 ## [1.0.5] - 2019-11-02
 ### Added
