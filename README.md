@@ -52,23 +52,15 @@ If the table does not have this column, records will be destroy instead of archi
 ```ruby
 class AddArchivedAtColumn < ActiveRecord::Migration
   def change
-    # Adds archived_at automatically (if all_records_archivable is set to true)
-    t.timestamp
+    create_table :table_name do |t|
+      t.timestamp                # Adds archived_at automatically (if all_records_archivable is set to true)
+      t.timestamp archive: true  # Adds archived_at timestamp
+      t.timestamp archive: false # Does NOT add archived_at timestamp
+    end
 
-    # - or -
+    add_timestamp :table_name
 
-    # Adds archived_at timestamp
-    t.timestamp archive: true
-
-    # - or -
-
-    # Does NOT add archived_at timestamp
-    t.timestamp archive: false
-
-    # - or -
-
-    # Manual column (null constraint must be false)
-    add_column :your_model, :archived_at, :datetime
+    add_column :table_name, :archived_at, :datetime # Manual column (null constraint must be false)
   end
 end
 ```
