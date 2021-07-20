@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2021-07-19
+### Added
+- Added Ruby 3.0 support
+
 ## [1.0.7] - 2020-11-03
 ### Changed
 - Improved migration support
