@@ -2,8 +2,9 @@
 
 require 'bundler/setup'
 require 'rails/generators'
-require 'lite/archive'
 require 'generator_spec'
+
+require 'lite/archive'
 
 Lite::Archive.configure do |config|
   config.all_records_archivable = true
