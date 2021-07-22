@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'bundler/setup'
+require 'rails/generators'
 require 'lite/archive'
 require 'generator_spec'
 
