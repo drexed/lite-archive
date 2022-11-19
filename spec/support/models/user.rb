@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   has_one :bio, dependent: :destroy
   has_many :cars, dependent: :destroy
   has_many :comments
-  has_many :ride_requests, as: :requester, class_name: 'Rider', dependent: :destroy
+  has_many :ride_requests, as: :requester, class_name: "Rider", dependent: :destroy
 
   before_unarchive :randomize_before
   after_archive :randomize_after

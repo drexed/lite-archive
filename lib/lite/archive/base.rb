@@ -9,7 +9,8 @@ module Lite
         base.extend Scopes
 
         base.instance_eval do
-          %i[archive unarchive].each { |name| define_model_callbacks name, only: %i[before after] }
+          define_model_callbacks :archive, only: %i[before after]
+          define_model_callbacks :unarchive, only: %i[before after]
         end
       end
 
@@ -84,12 +85,14 @@ module Lite
 
         self.updated_at = ts if updatable?
         self.archived_at = ts
+
         save(validate: false)
       end
 
       def mark_as_unarchived
         self.updated_at = archival_timestamp if updatable?
         self.archived_at = nil
+
         save(validate: false)
       end
 
@@ -101,12 +104,13 @@ module Lite
           dependents = reflection_dependents(table_name)
           next if dependents.nil?
 
-          action = case [reflection_marco(reflection), archivable?]
-                   when ['one', true] then :archive
-                   when ['one', false] then :destroy
-                   when ['many', true] then :archive_all
-                   when ['many', false] then :destroy_all
-                   end
+          action =
+            case [reflection_marco(reflection), archivable?]
+            when ["one", true] then :archive
+            when ["one", false] then :destroy
+            when ["many", true] then :archive_all
+            when ["many", false] then :destroy_all
+            end
 
           dependents.send(action)
         end
@@ -123,10 +127,11 @@ module Lite
           dependents = reflection_dependents(table_name)
           next if dependents.nil?
 
-          action = case reflection_marco(reflection)
-                   when 'one' then :unarchive
-                   when 'many' then :unarchive_all
-                   end
+          action =
+            case reflection_marco(reflection)
+            when "one" then :unarchive
+            when "many" then :unarchive_all
+            end
 
           dependents.send(action)
         end
@@ -142,7 +147,7 @@ module Lite
       end
 
       def reflection_marco(reflection)
-        reflection.macro.to_s.gsub('has_', '')
+        reflection.macro.to_s.gsub("has_", "")
       end
 
       def updatable?

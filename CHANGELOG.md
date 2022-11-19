@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.0] - 2022-11-19
+### Changed
+- Improved docs
+- Improve internal setup
+- Improved rubocop setup
+
 ## [1.1.3] - 2021-07-22
 ### Changed
 - Move locales to lib

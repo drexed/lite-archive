@@ -5,8 +5,6 @@
 
 Lite::Archive is a library for archiving (soft-delete) database records.
 
-**NOTE:** If you are coming from `ActiveArchive`, please read the [port](#port) section.
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -30,12 +28,11 @@ Or install it yourself as:
 * [Methods](#methods)
 * [Scopes](#scopes)
 * [Callbacks](#callbacks)
-* [Port](#port)
 
 ## Configurations
 
-`rails g lite:archive:install` will generate the following file:
-`../config/initalizers/lite_archive.rb`
+`rails g lite:archive:install` will generate the following file in your application root:
+`config/initalizers/lite_archive.rb`
 
 ```ruby
 Lite::Archive.configure do |config|
@@ -46,35 +43,46 @@ end
 
 ## Usage
 
-An `archived_at` column must be added to tables where you do not want records destroyed.
-If the table does not have this column, records will be destroy instead of archived.
+An `archived_at` column must be added to tables where you that you want to archive.
+If the table does not have this column, records will be destroyed instead.
 
+#### Table create
 ```ruby
 class AddArchivedAtColumn < ActiveRecord::Migration
   def change
     create_table :table_name do |t|
-      t.timestamp                # Adds archived_at automatically (if all_records_archivable is set to true)
+      t.timestamp                # Adds archived_at automatically if all_records_archivable
       t.timestamp archive: true  # Adds archived_at timestamp
       t.timestamp archive: false # Does NOT add archived_at timestamp
     end
+  end
+end
+```
 
-    add_timestamp :table_name
-
+#### Column migration
+```ruby
+class AddArchivedAtColumn < ActiveRecord::Migration
+  def change
     add_column :table_name, :archived_at, :datetime # Manual column (null constraint must be false)
+    add_timestamp :table_name                       # Named column helper (equivalent to the above)
   end
 end
 ```
 
 ## Methods
 
+#### Instance
 ```ruby
 user = User.first
-user.archive        #=> Archives the User record and its dependents
-user.unarchive      #=> Unarchives the User record and its dependents
-user.to_archival    #=> Returns the User archival state locale string (ex: Archived)
+user.archive     #=> Archives the User record and its dependents
+user.unarchive   #=> Unarchives the User record and its dependents
+user.to_archival #=> Returns the User archival state locale string (ex: Archived)
+```
 
-User.archive_all    #=> Archives all User records and their dependents
-User.unarchive_all  #=> Unarchives all User record and their dependents
+#### Class
+```ruby
+User.archive_all   #=> Archives all User records and their dependents
+User.unarchive_all #=> Unarchives all User record and their dependents
 ```
 
 ## Scopes
@@ -86,25 +94,21 @@ User.unarchived.all #=> Returns only unarchived records
 
 ## Callbacks
 
+#### Before
  ```ruby
  class User < ActiveRecord::Base
-   # ... omitted ...
-
    before_archive :do_something
-   after_archive :do_something
-
    before_unarchived :do_something
-   after_unarchive :do_something
-
-   # ... omitted ...
  end
 ```
 
-## Port
-
-`Lite::Archive` is a compatible port of [ActiveArchive](https://github.com/drexed/active_archive).
-
-Switching is as easy as renaming `ActiveArchive` to `Lite::Archive`.
+#### After
+ ```ruby
+ class User < ActiveRecord::Base
+   after_archive :do_something
+   after_unarchive :do_something
+ end
+```
 
 ## Development
 
@@ -114,7 +118,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/lite-archive. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/drexed/lite-archive. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -122,4 +126,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Lite::Archive project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/lite-archive/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Lite::Archive project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/drexed/lite-archive/blob/master/CODE_OF_CONDUCT.md).

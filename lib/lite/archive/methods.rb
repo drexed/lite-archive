@@ -5,7 +5,7 @@ module Lite
     module Methods
 
       def archivable?
-        columns.detect { |col| col.name == 'archived_at' }
+        columns.detect { |col| col.name == "archived_at" }
       end
 
       def archive_all(conditions = nil)

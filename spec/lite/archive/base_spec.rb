@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
 RSpec.describe Lite::Archive::Base do
 
-  describe '.archive' do
-    context 'when all records on table with archived_at' do
-      it 'to be Time object when soft-deleted' do
+  describe ".archive" do
+    context "when all records on table with archived_at" do
+      it "to be Time object when soft-deleted" do
         user = User.create!
         user.archive
 
         expect(user.archived_at).to be_a(Time)
       end
 
-      it 'to be the timestamp for updated_at and archived_at' do
+      it "to be the timestamp for updated_at and archived_at" do
         user = User.create!
         user.archive
 
         expect(user.updated_at).to eq(user.archived_at)
       end
 
-      it 'to be 1 when soft-deleted' do
+      it "to be 1 when soft-deleted" do
         user = User.create!
         user.archive
 
@@ -28,8 +28,8 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when all records on table without archived_at' do
-      it 'to be 0 when soft-deleted' do
+    context "when all records on table without archived_at" do
+      it "to be 0 when soft-deleted" do
         license = License.create!
         license.archive
 
@@ -37,16 +37,16 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when all records on dependent table with archived_at' do
-      it 'to be true when soft-deleted' do
+    context "when all records on dependent table with archived_at" do
+      it "to be true when soft-deleted" do
         user = User.create!
         Bio.create!(user_id: user.id)
         user.bio.archive
 
-        expect(user.bio.archived?).to eq(true)
+        expect(user.bio.archived?).to be(true)
       end
 
-      it 'to be 1 when soft-deleted' do
+      it "to be 1 when soft-deleted" do
         user = User.create!
         Bio.create!(user_id: user.id)
         user.bio.archive
@@ -55,8 +55,8 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when all records on dependent table without archived_at' do
-      it 'to be 0 when soft-deleted' do
+    context "when all records on dependent table without archived_at" do
+      it "to be 0 when soft-deleted" do
         user = User.create!
         License.create!(user_id: user.id)
         user.license.archive
@@ -65,8 +65,8 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when last record on dependent table with archived_at' do
-      it 'to be 2 when soft-deleted' do
+    context "when last record on dependent table with archived_at" do
+      it "to be 2 when soft-deleted" do
         user = User.create!
         2.times { Comment.create!(user_id: user.id) }
         user.comments.last.archive
@@ -74,18 +74,18 @@ RSpec.describe Lite::Archive::Base do
         expect(Comment.count).to eq(2)
       end
 
-      it 'to be true for each condition' do
+      it "to be true for each condition" do
         user = User.create!
         2.times { Comment.create!(user_id: user.id) }
         user.comments.last.archive
 
-        expect(Comment.first.unarchived?).to eq(true)
-        expect(Comment.last.archived?).to eq(true)
+        expect(Comment.first.unarchived?).to be(true)
+        expect(Comment.last.archived?).to be(true)
       end
     end
 
-    context 'when first record on dependent table with archived_at' do
-      it 'to be 2 when soft-deleted' do
+    context "when first record on dependent table with archived_at" do
+      it "to be 2 when soft-deleted" do
         user = User.create!
         2.times { Car.create!(user_id: user.id) }
         user.cars.first.archive
@@ -94,8 +94,8 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when all records on parent table with and dependent table without archived_at' do
-      it 'to be 0 when soft-deleted' do
+    context "when all records on parent table with and dependent table without archived_at" do
+      it "to be 0 when soft-deleted" do
         user = User.create!
         car = user.cars.create!
         Insurance.create!(car_id: car.id)
@@ -105,8 +105,8 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when all records on parent table with and dependent table with archived_at' do
-      it 'to be 2 when soft-deleted' do
+    context "when all records on parent table with and dependent table with archived_at" do
+      it "to be 2 when soft-deleted" do
         user = User.create!
         car = user.cars.create!
         2.times { car.drivers.create! }
@@ -118,9 +118,9 @@ RSpec.describe Lite::Archive::Base do
   end
 
   # rubocop:disable RSpec/ExampleLength
-  describe '.archive_all' do
-    context 'when all records on dependent table with archived_at' do
-      it 'to be all the proper counts when soft-delete' do
+  describe ".archive_all" do
+    context "when all records on dependent table with archived_at" do
+      it "to be all the proper counts when soft-delete" do
         user = User.create!
         car = user.cars.create!
         2.times { car.drivers.create! }
@@ -136,9 +136,9 @@ RSpec.describe Lite::Archive::Base do
   end
   # rubocop:enable RSpec/ExampleLength
 
-  describe '.unarchive' do
-    context 'when all records on table with archived_at' do
-      it 'to be 1 when soft-deleted' do
+  describe ".unarchive" do
+    context "when all records on table with archived_at" do
+      it "to be 1 when soft-deleted" do
         user = User.create!
         user.archive
         user.unarchive
@@ -146,17 +146,17 @@ RSpec.describe Lite::Archive::Base do
         expect(User.count).to eq(1)
       end
 
-      it 'to be nil when soft-deleted' do
+      it "to be nil when soft-deleted" do
         user = User.create!
         user.archive
         user.unarchive
 
-        expect(user.archived_at).to eq(nil)
+        expect(user.archived_at).to be_nil
       end
     end
 
-    context 'when all records on table without archived_at' do
-      it 'to be 0 when soft-deleted' do
+    context "when all records on table without archived_at" do
+      it "to be 0 when soft-deleted" do
         license = License.create!
         license.archive
 
@@ -164,17 +164,17 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when all records on dependent table with archived_at' do
-      it 'to be true when soft-deleted' do
+    context "when all records on dependent table with archived_at" do
+      it "to be true when soft-deleted" do
         user = User.create!
         Bio.create!(user_id: user.id)
         user.bio.archive
         user.bio.unarchive
 
-        expect(user.bio.unarchived?).to eq(true)
+        expect(user.bio.unarchived?).to be(true)
       end
 
-      it 'to be 2 when soft-deleted' do
+      it "to be 2 when soft-deleted" do
         user = User.create!
         2.times { user.cars.create! }
         user.archive
@@ -185,93 +185,93 @@ RSpec.describe Lite::Archive::Base do
     end
   end
 
-  describe '.archival?' do
-    context 'with saved_change_to_archived_at?' do
-      it 'returns false when archived_at has not changed' do
+  describe ".archival?" do
+    context "with saved_change_to_archived_at?" do
+      it "returns false when archived_at has not changed" do
         user = User.create!
 
-        expect(user.archival?).to eq(false)
+        expect(user.archival?).to be(false)
       end
 
-      it 'returns true when archived_at changed' do
+      it "returns true when archived_at changed" do
         user = User.create!
         user.archive
 
-        expect(user.archival?).to eq(true)
+        expect(user.archival?).to be(true)
       end
     end
 
-    context 'with will_save_change_to_archived_at?' do
-      it 'returns true when archived_at changed' do
+    context "with will_save_change_to_archived_at?" do
+      it "returns true when archived_at changed" do
         user = User.create!
         user.archived_at = Time.now
 
-        expect(user.archival?).to eq(true)
+        expect(user.archival?).to be(true)
       end
     end
 
-    context 'with destroyed?' do
-      it 'returns true when object destroyed' do
+    context "with destroyed?" do
+      it "returns true when object destroyed" do
         license = License.create!
         license.archive
 
-        expect(license.archival?).to eq(true)
+        expect(license.archival?).to be(true)
       end
     end
   end
 
-  describe '.unarchival?' do
-    context 'with saved_change_to_archived_at?' do
-      it 'returns false when archived_at has not changed' do
+  describe ".unarchival?" do
+    context "with saved_change_to_archived_at?" do
+      it "returns false when archived_at has not changed" do
         user = User.create!
 
-        expect(user.unarchival?).to eq(false)
+        expect(user.unarchival?).to be(false)
       end
 
-      it 'returns true when archived_at changed' do
+      it "returns true when archived_at changed" do
         user = User.create!
         user.archive
         user.unarchive
 
-        expect(user.unarchival?).to eq(true)
+        expect(user.unarchival?).to be(true)
       end
     end
 
-    context 'with will_save_change_to_archived_at?' do
-      it 'returns true when archived_at changed' do
+    context "with will_save_change_to_archived_at?" do
+      it "returns true when archived_at changed" do
         user = User.create!(archived_at: Time.now)
         user.archived_at = nil
 
-        expect(user.unarchival?).to eq(true)
+        expect(user.unarchival?).to be(true)
       end
     end
 
-    context 'with destroyed?' do
-      it 'returns true when object destroyed' do
+    context "with destroyed?" do
+      it "returns true when object destroyed" do
         license = License.create!
 
-        expect(license.unarchival?).to eq(true)
+        expect(license.unarchival?).to be(true)
       end
     end
   end
 
-  describe '.to_archival' do
+  describe ".to_archival" do
     it 'to be "Unarchived"' do
       user = User.create!
 
-      expect(user.to_archival).to eq('Unarchived')
+      expect(user.to_archival).to eq("Unarchived")
     end
 
     it 'to be "Archived"' do
       user = User.create!
       user.archive
 
-      expect(user.to_archival).to eq('Archived')
+      expect(user.to_archival).to eq("Archived")
     end
   end
 
-  describe '.callbacks' do
-    context 'when triggering the after_unarchive callback' do
+  describe ".callbacks" do
+    context "when triggering the after_unarchive callback" do
       it 'to be "after name" for name' do
         user = User.create!
         user.archive
@@ -280,7 +280,7 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when triggering the before_unarchive callback' do
+    context "when triggering the before_unarchive callback" do
       it 'to be "before name" for name' do
         user = User.create!
         user.archive
@@ -291,9 +291,9 @@ RSpec.describe Lite::Archive::Base do
     end
   end
 
-  describe '.counter_cache' do
-    context 'when incrementing counters' do
-      it 'to be 2 when dependents created' do
+  describe ".counter_cache" do
+    context "when incrementing counters" do
+      it "to be 2 when dependents created" do
         user = User.create!
         2.times { user.cars.create! }
 
@@ -301,8 +301,8 @@ RSpec.describe Lite::Archive::Base do
       end
     end
 
-    context 'when decrementing counters' do
-      it 'to be 2 when soft-deleted' do
+    context "when decrementing counters" do
+      it "to be 2 when soft-deleted" do
         user = User.create!
         2.times { user.cars.create! }
         user.cars.last.archive
@@ -310,7 +310,7 @@ RSpec.describe Lite::Archive::Base do
         expect(user.cars_count).to eq(2)
       end
 
-      it 'to be 1 when hard-deleted' do
+      it "to be 1 when hard-deleted" do
         user = User.create!
         2.times { user.cars.create! }
         user.cars.last.destroy
@@ -320,20 +320,20 @@ RSpec.describe Lite::Archive::Base do
     end
   end
 
-  describe '.dirty_attributes' do
-    context 'when adding archived_at to mutations' do
-      it 'to be true for saved_change_to_archived_at?' do
+  describe ".dirty_attributes" do
+    context "when adding archived_at to mutations" do
+      it "to be true for saved_change_to_archived_at?" do
         user = User.create!
         user.archive
 
-        expect(user.saved_change_to_archived_at?).to eq(true)
+        expect(user.saved_change_to_archived_at?).to be(true)
       end
 
-      it 'to be true for will_save_change_to_archived_at?' do
+      it "to be true for will_save_change_to_archived_at?" do
         user = User.create!
         user.archived_at = Time.now
 
-        expect(user.will_save_change_to_archived_at?).to eq(true)
+        expect(user.will_save_change_to_archived_at?).to be(true)
       end
     end
   end

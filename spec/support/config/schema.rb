@@ -2,12 +2,12 @@
 
 ActiveRecord::Base.time_zone_aware_attributes = true
 ActiveRecord::Base.establish_connection(
-  adapter: 'sqlite3',
-  database: ':memory:',
-  encoding: 'utf8',
+  adapter: "sqlite3",
+  database: ":memory:",
+  encoding: "utf8",
   pool: 5,
   timeout: 5000,
-  verbosity: 'quiet'
+  verbosity: "quiet"
 )
 
 ActiveRecord::Migration.verbose = false
